@@ -1,26 +1,41 @@
 from jtop import jtop 
 import csv
+import os
 
 #declaration des listes contenant les données
 power_list = []
-gpu_freq_list = []
+ram_list = []
+gpu_temp_list = []
+cpu_temp_list = []
+board_temp_list = []
 #data_list = [power_list, gpu_freq_list]
-entetes = ['puissance tot', 'gpu freq']
+entetes = ['puissance tot', 'ram used', 'gpu temp', 'cpu temp', 'board temp']
 
 
 
 with jtop() as jetson:
     # jetson.ok() will provide the proper update frequency
     while jetson.ok():
+        os.system('clear')
+        print("running...")
+
         # lit et affiche les stats de la jetson
         print("puissance totale : ", int(jetson.power['tot']['power'])/1000, "W")
         print("fréquence gpu : ", int(jetson.gpu['ga10b']['freq']['cur'])/1000, "MHz")
-
+        print("temperature gpu : ", jetson.temperature['GPU']['temp'], "°C")
+        print("temperature cpu : ", jetson.temperature['CPU']['temp'], "°C")
+        print("temperature carte : ",jetson.temperature['Tboard']['temp'], "°C")
+        print("ram used : ", round(jetson.memory['RAM']['used']/jetson.memory['RAM']['tot']*100,2), "%")
+        
         #ajout des stats aux listes
         power_list.append(jetson.power['tot']['power'])
-        gpu_freq_list.append(jetson.gpu['ga10b']['freq']['cur'])
+        ram_list.append(round(jetson.memory['RAM']['used']/jetson.memory['RAM']['tot']*100,1))
+        gpu_temp_list.append(jetson.temperature['GPU']['temp'])
+        cpu_temp_list.append(jetson.temperature['CPU']['temp'])
+        board_temp_list.append(jetson.temperature['Tboard']['temp'])
 
-donnees = list(zip(power_list, gpu_freq_list))
+
+donnees = list(zip(power_list, ram_list, gpu_temp_list, cpu_temp_list, board_temp_list))
 
 #ecriture des data dans un fichier csv
 with open(input("\nentrer un nom de fichier : ") + ".csv", 'w', encoding='UTF8', newline='') as csvfile:
@@ -29,4 +44,4 @@ with open(input("\nentrer un nom de fichier : ") + ".csv", 'w', encoding='UTF8',
     writer.writeheader()
 	
     for donnee in donnees:
-        writer.writerow({'puissance tot' : donnee[0], 'gpu freq' : donnee[1]})
+        writer.writerow({'puissance tot' : donnee[0], 'ram used' : donnee[1], 'gpu temp' : donnee[2], 'cpu temp' : donnee[3], 'board temp' : donnee[4]})
