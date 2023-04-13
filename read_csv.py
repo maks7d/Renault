@@ -3,15 +3,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+def filter(s):
+    mean = s.mean()
+    std = s.std()
+    return s[(s > mean - std) & (s < mean + 1.5*std)]
+
 nom_fichier = input('nom du fichier : ') + ".csv"
 
 df = pd.read_csv(nom_fichier)
 
-puissance_tot = df['puissance tot']
-ram_used = df['ram used']
-gpu_temp = df['gpu temp']
-cpu_temp = df['cpu temp']
-board_temp = df['board temp']
+puissance_tot = filter(df['puissance tot'])
+ram_used = filter(df['ram used'])
+gpu_temp = filter(df['gpu temp'])
+cpu_temp = filter(df['cpu temp'])
+board_temp = filter(df['board temp'])
 
 fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5,1)
 
