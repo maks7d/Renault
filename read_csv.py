@@ -12,11 +12,15 @@ nom_fichier = input('nom du fichier : ') + ".csv"
 df = pd.read_csv(nom_fichier)
 
 puissance_tot = filter(df['puissance tot'])
+puissance_moy = filter(df['puissant tot moy'])
 ram_used = filter(df['ram used'])
 gpu_temp = filter(df['gpu temp'])
 cpu_temp = filter(df['cpu temp'])
 board_temp = filter(df['board temp'])
 perf = df['perf'][0]
+
+def frug(w):
+    return perf - (w/(1+1/puissance_moy))
 
 fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5,1)
 
@@ -34,7 +38,6 @@ ax4.set_title("cpu temp (°C)")
 
 ax5.plot(board_temp)
 ax5.set_title("board temp (°C)")
-
 
 
 
