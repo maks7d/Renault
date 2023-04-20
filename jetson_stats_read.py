@@ -8,10 +8,8 @@ ram_list = []
 gpu_temp_list = []
 cpu_temp_list = []
 board_temp_list = []
-#data_list = [power_list, gpu_freq_list]
-entetes = ['puissance tot', 'ram used', 'gpu temp', 'cpu temp', 'board temp']
-
-
+perf_list = []
+entetes = ['puissance tot', 'ram used', 'gpu temp', 'cpu temp', 'board temp', 'perf']
 
 with jtop() as jetson:
     # jetson.ok() will provide the proper update frequency
@@ -33,9 +31,10 @@ with jtop() as jetson:
         gpu_temp_list.append(jetson.temperature['GPU']['temp'])
         cpu_temp_list.append(jetson.temperature['CPU']['temp'])
         board_temp_list.append(jetson.temperature['Tboard']['temp'])
-
-
-donnees = list(zip(power_list, ram_list, gpu_temp_list, cpu_temp_list, board_temp_list))
+        perf_list.append(0)
+        
+perf_list[0]= input("entrer valeur de perf : ")
+donnees = list(zip(power_list, ram_list, gpu_temp_list, cpu_temp_list, board_temp_list, perf_list))
 
 #ecriture des data dans un fichier csv
 with open(input("\nentrer un nom de fichier : ") + ".csv", 'w', encoding='UTF8', newline='') as csvfile:
@@ -44,4 +43,5 @@ with open(input("\nentrer un nom de fichier : ") + ".csv", 'w', encoding='UTF8',
     writer.writeheader()
 	
     for donnee in donnees:
-        writer.writerow({'puissance tot' : donnee[0], 'ram used' : donnee[1], 'gpu temp' : donnee[2], 'cpu temp' : donnee[3], 'board temp' : donnee[4]})
+        writer.writerow({'puissance tot' : donnee[0], 'ram used' : donnee[1], 'gpu temp' : donnee[2], 'cpu temp' : donnee[3], 'board temp' : donnee[4],'perf': donnee[5]})
+
