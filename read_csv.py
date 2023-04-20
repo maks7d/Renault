@@ -7,22 +7,31 @@ def filter(s):
     std = s.std()
     return s[(s > mean - std) & (s < mean + 1.5*std)]
 
-nom_fichier = input('nom du fichier : ') + ".csv"
+premier_fichier = input('premier fichier : ') + ".csv"
+second_fichier = input("second fichier : ") + ".csv"
+df1 = pd.read_csv(premier_fichier)
+df2 = pd.read_csv(second_fichier)
 
-df = pd.read_csv(nom_fichier)
 
-puissance_tot = filter(df['puissance tot'])
-puissance_moy = filter(df['puissant tot moy'])
-ram_used = filter(df['ram used'])
-gpu_temp = filter(df['gpu temp'])
-cpu_temp = filter(df['cpu temp'])
-board_temp = filter(df['board temp'])
-perf = df['perf'][0]
+puissance_tot = filter(df1['puissance tot'])
+puissance_moy = df1['puissance tot moy'].iloc[-1]
+ram_used = filter(df1['ram used'])
+gpu_temp = filter(df1['gpu temp'])
+cpu_temp = filter(df1['cpu temp'])
+board_temp = filter(df1['board temp'])
+perf = df1['perf'][0]
 
 def frug(w):
     return perf - (w/(1+1/puissance_moy))
 
-fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5,1)
+frug_list = []
+
+for i in range(1,100):
+    frug_list.append(frug(i))
+    
+print(frug_list)
+
+fig, (ax1, ax2, ax3, ax4, ax6) = plt.subplots(5,1)
 
 ax1.plot(puissance_tot)
 ax1.set_title("puissance tot (mW)")
@@ -36,9 +45,10 @@ ax3.set_title("gpu_temp (°C)")
 ax4.plot(cpu_temp)
 ax4.set_title("cpu temp (°C)")
 
-ax5.plot(board_temp)
-ax5.set_title("board temp (°C)")
+#ax5.plot(board_temp)
+#ax5.set_title("board temp (°C)")
 
-
+ax6.plot(frug_list)
+ax6.set_title("score de frugalité")
 
 plt.show()

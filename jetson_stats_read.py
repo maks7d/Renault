@@ -11,7 +11,8 @@ board_temp_list = []
 perf_list = []
 
 #déclaration des entetes du fichier csv dans lequel seront enregistrées les données
-entetes = ['puissance tot', 'puissance tot moy', 'ram used', 'gpu temp', 'cpu temp', 'board temp', 'perf']
+entetes = ['puissance tot', 'puissance tot moy', 'ram used', 'gpu temp', 
+           'cpu temp', 'board temp', 'perf']
 
 #nombre de valeurs ajoutés dans les listes
 value_counts = 0
@@ -46,7 +47,8 @@ with jtop() as jetson:
 
 
 perf_list[0] = input("entrer valeur de perf : ")
-donnees = list(zip(power_tot_list, power_tot_avg_list, ram_list, gpu_temp_list, cpu_temp_list, board_temp_list, perf_list))
+donnees = list(zip(power_tot_list, power_tot_avg_list, ram_list, 
+                   gpu_temp_list, cpu_temp_list, board_temp_list, perf_list))
 
 #ecriture des data dans un fichier csv
 file_name = input("\nentrer un nom de fichier : ") + ".csv"
@@ -56,7 +58,10 @@ with open(file_name, 'w', encoding='UTF8', newline='') as csvfile:
     writer.writeheader()
 	
     for donnee in donnees: 
-        writer.writerow({'puissance tot' : donnee[0], 'puissance tot moy': donnee[1], 'ram used' : donnee[2], 'gpu temp' : donnee[3], 'cpu temp' : donnee[4], 'board temp' : donnee[5],'perf': donnee[6]})
+        writer.writerow({'puissance tot' : donnee[0], 'puissance tot moy': donnee[1], 
+                         'ram used' : donnee[2], 
+                         'gpu temp' : donnee[3], 'cpu temp' : donnee[4], 
+                         'board temp' : donnee[5],'perf': donnee[6]})
 
 file_path = os.path.join(os.getcwd(), file_name)
 print("file saved in : ", file_path)
