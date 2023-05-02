@@ -1,7 +1,9 @@
 from jtop import jtop 
 import csv
 import os
+
 #declaration des listes contenant les données mesurées
+
 power_tot_list = []
 power_tot_avg_list = []
 ram_list = []
@@ -17,7 +19,6 @@ entetes = ['puissance tot', 'puissance tot moy', 'ram used', 'gpu temp',
 #nombre de valeurs ajoutés dans les listes
 value_counts = 0
 
-
 with jtop() as jetson:
     # jetson.ok() will provide the proper update frequency
     while jetson.ok():
@@ -25,7 +26,7 @@ with jtop() as jetson:
         print("running...")
 
         # lit et affiche les stats de la jetson
-        print("puissance totale : ", int(jetson.power['tot']['power'])/1000, "W") 
+        print("puissance totale instantanée : ", int(jetson.power['tot']['power'])/1000, "W") 
         print("puissance totale moyenne: ", int(jetson.power['tot']['avg'])/1000, "W") 
         print("fréquence gpu : ", int(jetson.gpu['ga10b']['freq']['cur'])/1000, "MHz") 
         print("temperature gpu : ", jetson.temperature['GPU']['temp'], "°C") 
