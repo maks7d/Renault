@@ -50,6 +50,6 @@ for file_name in files_list:
     axs[2,1].set_title("score de frugalité")
 
     fig.tight_layout()
-    print(frug_list)
+    #print(frug_list)
 
 plt.show()
